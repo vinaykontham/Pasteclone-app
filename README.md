@@ -1,210 +1,146 @@
-# Pastebin-like Text Sharing Service
+📖 Overview
+This project is a Pastebin-like text snippet sharing service built with FastAPI. Users can create, retrieve, and manage text snippets with unique links, expiration features, and privacy settings. 🚀
 
-A FastAPI-based text-sharing service that allows users to create, retrieve, and manage text snippets. Each snippet is assigned a unique link, and users can choose to make snippets public or private. Snippets can also have an optional expiration date.
+✨ Key Features
+✅ Generate unique links for text snippets
+✅ Retrieve, edit, and delete snippets via API
+✅ Expiration mechanism for temporary pastes
+✅ Option to mark pastes as public or private
+✅ CI/CD with GitHub Actions (Testing, Docker Build, GKE Deployment)
+✅ Deployed on Kubernetes (Google Kubernetes Engine - GKE)
+✅ Database Support: SQLite for local development, PostgreSQL for production
 
----
-
-## **Features**
-- **Create Snippets**: Users can create text snippets with optional expiration dates and visibility settings.
-- **Unique Links**: Each snippet is assigned a unique link for easy sharing.
-- **Retrieve Snippets**: Users can retrieve snippets using the unique link.
-- **Public/Private Snippets**: Snippets can be marked as public or private.
-- **Expiration Mechanism**: Snippets can be set to expire after a specified date and time.
-
----
-
-## **Tech Stack**
-- **Backend**: FastAPI (Python)
-- **Database**: SQLite (can be replaced with PostgreSQL/MySQL)
-- **Frontend**: HTML, CSS (Bootstrap), JavaScript
-- **Templating**: Jinja2
-- **Deployment**: Docker, Docker Compose
-
----
-
-## **Project overview**
-+-------------------+       +-------------------+       +-------------------+
-|   GitHub Actions  |       |    Docker Hub     |       |   Kubernetes (K8s) |
-|                   |       |                   |       |                   |
-|  Build & Push     | ----> |   Store Docker    | ----> |   Deploy App       |
-|  Docker Image     |       |   Image           |       |   (Pods, Services) |
-+-------------------+       +-------------------+       +-------------------+
-        |                           |                           |
-        |                           |                           |
-        v                           v                           v
-+-------------------+       +-------------------+       +-------------------+
-|   GitHub Repo     |       |   Docker Registry |       |   Load Balancer   |
-|                   |       |                   |       |   (External IP)   |
-|  Source Code      |       |   Docker Image    |       |   Expose App      |
-+-------------------+       +-------------------+       +-------------------+
----
-
-## **Setup Instructions**
-
-### **1. Clone the Repository**
-```bash
-git clone https://github.com/your-username/pastebin-service.git
-cd pastebin-service
-2. Install Dependencies
+📌 Architecture & Design
+🛠️ Tech Stack
+Component	Technology
+Backend	FastAPI, Pydantic
+Database	SQLite (Local) / PostgreSQL (Production)
+Cache	Redis (Optional)
+Containerization	Docker, Docker Compose
+Orchestration	Kubernetes (GKE)
+CI/CD	GitHub Actions
+Testing	pytest, Coverage
+🏗️ System Architecture
+plaintext
+Copy
+Edit
++------------+       +--------------+       +---------------+       +-------------+
+|   Client   | ----> | FastAPI App  | ----> | PostgreSQL DB | ----> | Kubernetes  |
+| (Frontend) |       |  (Backend)   |       | (Persistent)  |       |  (GKE)      |
++------------+       +--------------+       +---------------+       +-------------+
+📂 Project Structure
 bash
 Copy
+Edit
+├── app/
+│   ├── main.py        # FastAPI Application Entry Point
+│   ├── config.py      # Database & App Configurations
+│   ├── models.py      # SQLAlchemy Models
+│   ├── schemas.py     # Pydantic Schemas
+│   ├── crud.py        # CRUD Operations
+│   ├── routes/        # API Routes
+│   ├── templates/     # Jinja2 HTML Templates
+│   ├── static/        # CSS, JS Files
+├── db/
+│   ├── init_db.py     # DB Initialization Script
+├── tests/
+│   ├── test_routes.py # Unit Tests for API
+│   ├── test_utils.py  # Helper Functions Tests
+├── k8s/
+│   ├── deployment.yaml # Kubernetes Deployment
+│   ├── service.yaml    # Kubernetes Service
+│   ├── pvc.yaml        # Persistent Volume Claim
+├── .github/workflows/
+│   ├── ci-cd.yml      # GitHub Actions CI/CD Workflow
+├── docker-compose.yml # Local Development Setup
+├── Dockerfile         # Container Build File
+├── requirements.txt   # Python Dependencies
+├── README.md          # Project Documentation
+🚀 Installation & Setup
+🔹 Local Development
+1️⃣ Clone the Repository
+
+sh
+Copy
+Edit
+git clone https://github.com/your-username/pastebin-app.git  
+cd pastebin-app
+2️⃣ Create & Activate Virtual Environment
+
+sh
+Copy
+Edit
+python -m venv venv
+source venv/bin/activate   # macOS/Linux
+venv\Scripts\activate      # Windows
+3️⃣ Install Dependencies
+
+sh
+Copy
+Edit
 pip install -r requirements.txt
-3. Initialize the Database
-Run the following script to create the database and tables:
+4️⃣ Run the Application
 
-bash
+sh
 Copy
-python db/init_db.py
-4. Run the Application
-Start the FastAPI server:
-
-bash
-Copy
+Edit
 uvicorn app.main:app --reload
-The application will be available at http://127.0.0.1:8000.
+🔗 API will be available at: http://127.0.0.1:8000
 
-API Documentation
-1. Create a Snippet
-Endpoint: POST /api/v1/snippets/
-
-Request Body:
-
-json
+🔹 Running with Docker
+sh
 Copy
-{
-  "content": "This is a test snippet",
-  "is_public": true,
-  "expires_at": "2023-12-31T23:59:59"
-}
-Response:
-
-json
+Edit
+docker build -t pastebin-app .
+docker run -p 8000:8000 pastebin-app
+🔹 Running Tests
+sh
 Copy
-{
-  "id": 1,
-  "content": "This is a test snippet",
-  "link": "abc12345",
-  "is_public": true,
-  "expires_at": "2023-12-31T23:59:59",
-  "created_at": "2023-10-01T12:00:00"
-}
-2. Retrieve a Snippet
-Endpoint: GET /api/v1/snippets/{link}
+Edit
+pytest --cov=app tests/
+🚢 CI/CD Pipeline (GitHub Actions)
+The GitHub Actions workflow automates testing, building, and deploying the FastAPI app to Google Kubernetes Engine (GKE).
 
-Response:
+Workflow Steps
+1️⃣ Run Tests ✅
+2️⃣ Build & Push Docker Image ✅
+3️⃣ Deploy to GKE ✅
 
-json
+Manually Trigger CI/CD
+sh
 Copy
-{
-  "id": 1,
-  "content": "This is a test snippet",
-  "link": "abc12345",
-  "is_public": true,
-  "expires_at": "2023-12-31T23:59:59",
-  "created_at": "2023-10-01T12:00:00"
-}
-Deployment
-1. Docker
-Build and run the Docker container:
-
-bash
+Edit
+git push origin main
+🚀 Kubernetes Deployment (GKE)
+🔹 Prerequisites
+Google Cloud Project & GKE Cluster
+kubectl & gcloud CLI installed
+🔹 Deploy to GKE
+sh
 Copy
-docker build -t pastebin-service .
-docker run -p 8000:8000 pastebin-service
-2. Docker Compose
-Use Docker Compose for local deployment:
-
-bash
+Edit
+kubectl apply -f k8s/
+🔹 Check Deployment
+sh
 Copy
-docker-compose up
-Design Guidelines
-1. UI Design
-Homepage: A clean and minimal form for creating snippets.
-
-Snippet Page: A simple page to display snippet content with a link to create a new snippet.
-
-2. Color Scheme
-Primary Color: #0d6efd (Bootstrap primary blue)
-
-Background Color: #f8f9fa (Light gray)
-
-Text Color: #333 (Dark gray)
-
-3. Typography
-Font Family: Arial, sans-serif
-
-Font Sizes:
-
-Headings: 2rem
-
-Body Text: 1rem
-
-4. Layout
-Container: Centered with a maximum width of 600px.
-
-Card: Shadow effect for a modern look.
-
-Contributing
-Contributions are welcome! Please follow these steps:
-
-Fork the repository.
-
-Create a new branch (git checkout -b feature/your-feature).
-
-Commit your changes (git commit -m 'Add some feature').
-
-Push to the branch (git push origin feature/your-feature).
-
-Open a pull request.
-
-License
-This project is licensed under the MIT License. See the LICENSE file for details.
-
-Contact
-For questions or feedback, please contact:
-
-Name: Vinay Kontham
-
-Email: vinay@example.com
-
-GitHub: your-username
-
+Edit
+kubectl get pods
+kubectl get services
+🔹 Get External IP
+sh
 Copy
+Edit
+kubectl get svc pastebin-service
+🔗 Access App via EXTERNAL_IP
 
----
+📌 API Endpoints
+Method	Endpoint	Description
+POST	/api/v1/snippets/	Create a snippet
+GET	/api/v1/snippets/{id}	Retrieve a snippet
+PUT	/api/v1/snippets/{id}	Edit a snippet
+DELETE	/api/v1/snippets/{id}	Delete a snippet
+📜 License
+MIT License © 2025 Your Name
 
-## **Design Guidelines**
-
-### **1. UI Design**
-- **Homepage**: A clean and minimal form for creating snippets.
-- **Snippet Page**: A simple page to display snippet content with a link to create a new snippet.
-
-### **2. Color Scheme**
-- **Primary Color**: `#0d6efd` (Bootstrap primary blue)
-- **Background Color**: `#f8f9fa` (Light gray)
-- **Text Color**: `#333` (Dark gray)
-
-### **3. Typography**
-- **Font Family**: `Arial, sans-serif`
-- **Font Sizes**:
-  - Headings: `2rem`
-  - Body Text: `1rem`
-
-### **4. Layout**
-- **Container**: Centered with a maximum width of `600px`.
-- **Card**: Shadow effect for a modern look.
-
----
-
-## **Screenshots**
-
-### **Homepage**
-![Homepage](https://via.placeholder.com/600x400?text=Create+Snippet+Page)
-
-### **Snippet Page**
-![Snippet Page](https://via.placeholder.com/600x400?text=View+Snippet+Page)
-
----
-
-This README and design guidelines provide a professional overview of your project. Let me know if you need further assistance!
-New chat
+🎯 Final Thoughts
+This real-world README provides a professional, structured, and visually appealing documentation format for your Pastebin-like application. 🚀 Let me know if you need further refinements! 😊
