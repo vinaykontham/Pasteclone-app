@@ -11,6 +11,10 @@
 ## 📖 Overview
 This project is a **Pastebin-like text snippet sharing service** built with **FastAPI**. Users can create, retrieve, and manage text snippets with **unique links, expiration features, and privacy settings**. 🚀
 
+![image](https://github.com/user-attachments/assets/87eac474-aa5a-4a76-ae3e-49fa454d8ad0)
+![image](https://github.com/user-attachments/assets/6e7b9d21-dcb9-4be3-9023-57e06a098345)
+
+
 ---
 
 ## ✨ Key Features
@@ -146,6 +150,7 @@ kubectl get services
 kubectl get svc pastebin-service
 ```
 🔗 Access App via `EXTERNAL_IP`
+
 
 ---
 
