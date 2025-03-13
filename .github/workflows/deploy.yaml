@@ -49,12 +49,11 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/vinaykontham:${{ github.sha }} .
-          docker tag ${{ secrets.DOCKER_USERNAME }}/vinaykontham:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/pastebin-app:latest
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/vinaykontham:latest .
+          docker tag ${{ secrets.DOCKER_USERNAME }}/vinaykontham:latest
 
       - name: Push Docker Image
         run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/vinaykontham:${{ github.sha }}
           docker push ${{ secrets.DOCKER_USERNAME }}/vinaykontham:latest
 
   deploy:
@@ -75,5 +74,4 @@ jobs:
 
       - name: Deploy to Kubernetes
         run: |
-          kubectl --kubeconfig=kubeconfig set image deployment/pastebin pastebin=${{ secrets.DOCKER_USERNAME }}/pastebin-app:${{ github.sha }}
-          kubectl --kubeconfig=kubeconfig rollout status deployment/pastebin
+          kubectl apply -f k8s/
