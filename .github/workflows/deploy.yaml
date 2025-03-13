@@ -24,7 +24,8 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-           pip install --no-cache-dir -r requirements.txt
+          pip install --no-cache-dir -r requirements.txt
+          pip install --upgrade fastapi starlette httpx
 
 
 
@@ -53,8 +54,8 @@ jobs:
 
       - name: Push Docker Image
         run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/pastebin-app:${{ github.sha }}
-          docker push ${{ secrets.DOCKER_USERNAME }}/pastebin-app:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/vinaykontham:${{ github.sha }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/vinaykontham:latest
 
   deploy:
     name: Deploy to Kubernetes

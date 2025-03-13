@@ -1,5 +1,5 @@
 # tests/test_routes.py
-from fastapi.testclient import TestClient
+from fastapi.testclient import TestClient  # ✅ Correct import
 from app.main import app
 
 client = TestClient(app)
