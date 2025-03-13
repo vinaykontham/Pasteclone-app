@@ -22,37 +22,21 @@ A FastAPI-based text-sharing service that allows users to create, retrieve, and 
 
 ---
 
-## **Project Structure**
-pastebin_service/
-├── app/
-│ ├── init.py
-│ ├── main.py # FastAPI application entry point
-│ ├── models.py # Database models
-│ ├── schemas.py # Pydantic schemas for request/response validation
-│ ├── crud.py # Database operations
-│ ├── utils.py # Utility functions (e.g., unique link generation)
-│ ├── config.py # Configuration settings
-│ ├── static/ # Static files (CSS, JS)
-│ │ └── styles.css
-│ ├── templates/ # HTML templates
-│ │ ├── index.html # Homepage (create snippet)
-│ │ └── snippet.html # View snippet page
-│ └── routes/ # API routes
-│ └── snippets.py # Snippet-related endpoints
-├── db/ # Database setup
-│ └── init_db.py # Initialize database
-├── tests/ # Unit tests
-│ ├── init.py
-│ ├── test_routes.py # Test cases for API endpoints
-│ └── test_utils.py # Test cases for utility functions
-├── Dockerfile # Dockerfile for containerization
-├── docker-compose.yml # Docker Compose for local deployment
-├── requirements.txt # Python dependencies
-├── README.md # Project documentation
-└── .env # Environment variables
-
-Copy
-
+## **Project overview**
++-------------------+       +-------------------+       +-------------------+
+|   GitHub Actions  |       |    Docker Hub     |       |   Kubernetes (K8s) |
+|                   |       |                   |       |                   |
+|  Build & Push     | ----> |   Store Docker    | ----> |   Deploy App       |
+|  Docker Image     |       |   Image           |       |   (Pods, Services) |
++-------------------+       +-------------------+       +-------------------+
+        |                           |                           |
+        |                           |                           |
+        v                           v                           v
++-------------------+       +-------------------+       +-------------------+
+|   GitHub Repo     |       |   Docker Registry |       |   Load Balancer   |
+|                   |       |                   |       |   (External IP)   |
+|  Source Code      |       |   Docker Image    |       |   Expose App      |
++-------------------+       +-------------------+       +-------------------+
 ---
 
 ## **Setup Instructions**
