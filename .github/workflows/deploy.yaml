@@ -69,15 +69,16 @@ jobs:
         with:
           version: "latest"
 
-      - name: Configure Kubeconfig
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+  
+      - name: Set Up `gcloud` and Connect to GKE
         run: |
-          mkdir -p $HOME/.kube  # ✅ Create the .kube directory if missing
-          echo "${{ secrets.KUBECONFIG_B64 }}" | base64 -d > $HOME/.kube/config
-          chmod 600 $HOME/.kube/config
-          export KUBECONFIG=$HOME/.kube/config
-          kubectl config view
-          kubectl config use-context gke_hip-caster-451209-f0_us-central1_python-cluster
-
-      - name: Deploy to Kubernetes
-        run: |
-          kubectl apply -f k8s/ -n pasteclone
+            gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
+            gcloud container clusters get-credentials python-cluster --region us-central1
+            kubectl config current-context  # ✅ Verify context is set
+  
+      - name: Apply Kubernetes Manifests
+        run: kubectl apply -f k8s/
