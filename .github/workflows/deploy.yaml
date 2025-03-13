@@ -81,4 +81,4 @@ jobs:
             kubectl config current-context  # ✅ Verify context is set
   
       - name: Apply Kubernetes Manifests
-        run: kubectl apply -f k8s/
+        run: kubectl apply -f k8s/ -n pasteclone
