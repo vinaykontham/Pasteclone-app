@@ -75,8 +75,10 @@ jobs:
           credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT }}
       - name: Install `gke-gcloud-auth-plugin`
         run: |
-          sudo apt-get install google-cloud-cli-gke-gcloud-auth-plugin
-          export USE_GKE_GCLOUD_AUTH_PLUGIN=True  #
+          gcloud components update
+          gcloud components install gke-gcloud-auth-plugin
+          echo "export USE_GKE_GCLOUD_AUTH_PLUGIN=True" >> ~/.bashrc
+          source ~/.bashrc
   
       - name: Set Up `gcloud` and Connect to GKE
         run: |
