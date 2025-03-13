@@ -73,6 +73,10 @@ jobs:
         uses: google-github-actions/auth@v1
         with:
           credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+      - name: Install `gke-gcloud-auth-plugin`
+        run: |
+          gcloud components install gke-gcloud-auth-plugin
+          export USE_GKE_GCLOUD_AUTH_PLUGIN=True  #
   
       - name: Set Up `gcloud` and Connect to GKE
         run: |
