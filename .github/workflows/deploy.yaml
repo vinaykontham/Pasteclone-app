@@ -30,7 +30,7 @@ jobs:
 
       - name: Run Tests
         run: |
-          pytest --cov=app tests/ --no-warnings --cov-report=xml
+          pytest --cov=app tests/ -p no:warnings --cov-report=xml
 
   build-and-push:
     name: Build & Push Docker Image
